@@ -1,31 +1,43 @@
-package com.mobiquityinc.packer.model;
+package com.mobiquityinc.packer.model.impl;
 
 import java.math.BigDecimal;
 
-public class MobiquityPackageItem {
+import com.mobiquityinc.packer.model.APackageItem;
+
+public class MobiquityPackageItem implements APackageItem {
 
 	private int indexNumber;
 	private Double weight;
 	private BigDecimal cost;
 
+	@Override
 	public int getIndexNumber() {
 		return indexNumber;
 	}
 
+	@Override
 	public void setIndexNumber(int indexNumber) {
 		this.indexNumber = indexNumber;
 	}
 
+	@Override
 	public Double getWeight() {
 		return weight;
 	}
 
+	@Override
 	public void setWeight(Double weight) {
 		this.weight = weight;
 	}
 
+	@Override
 	public BigDecimal getCost() {
 		return cost;
+	}
+
+	@Override
+	public void setCost(BigDecimal cost) {
+		this.cost = cost;
 	}
 
 	@Override
@@ -48,10 +60,6 @@ public class MobiquityPackageItem {
 		if (indexNumber != other.indexNumber)
 			return false;
 		return true;
-	}
-
-	public void setCost(BigDecimal cost) {
-		this.cost = cost;
 	}
 
 	@Override

@@ -14,20 +14,19 @@ import com.mobiquityinc.exceptions.APIException;
 import com.mobiquityinc.exceptions.ItemMaxCostExceededException;
 import com.mobiquityinc.exceptions.ItemMaxWeightExceededException;
 import com.mobiquityinc.exceptions.PackageMaxWeightExceededException;
-import com.mobiquityinc.packer.model.MobiquityPackage;
-import com.mobiquityinc.packer.model.MobiquityPackageItem;
+import com.mobiquityinc.packer.impl.MobiquityPackOptimizer;
+import com.mobiquityinc.packer.model.APackage;
 import com.mobiquityinc.packer.model.MobiquityPackages;
+import com.mobiquityinc.packer.model.impl.MobiquityPackage;
+import com.mobiquityinc.packer.model.impl.MobiquityPackageItem;
 
 public class Packer {
 
+	// static data variables
 	private static final String EURO_SYMBOL = "€";
 	private static final double PACKAGE_MAX_WEIGHT = 100;
 	private static final double ITEM_MAX_WEIGHT = 100;
 	private static final double ITEM_MAX_COST = 100;
-
-	public static void main(String[] args) throws APIException {
-		System.out.println(pack("src/main/resources/packages.txt"));
-	}
 
 	private static Logger logger = LoggerFactory.getLogger(Packer.class);
 
@@ -56,12 +55,14 @@ public class Packer {
 	/*
 	 * optimize all packages
 	 */
-	private static void optimizePacks(List<MobiquityPackage> packages) {
+	private static void optimizePacks(List<APackage> packages) {
 
 		logger.debug("Optimizing packages");
 
-		for (MobiquityPackage mobiquiquityPackage : packages) {
-			PackOptimizer.optimize(mobiquiquityPackage);
+		PackOptimizer packOptimizer = new MobiquityPackOptimizer();
+
+		for (APackage mobiquiquityPackage : packages) {
+			packOptimizer.optimize(mobiquiquityPackage);
 		}
 
 	}
@@ -146,8 +147,8 @@ public class Packer {
 	}
 
 	/*
-	 * Validate constraints from the input file data relating the the items'
-	 * maximum weight and maximum item cost.
+	 * Validate constraints from the input file data relating the the items' maximum
+	 * weight and maximum item cost.
 	 */
 	private static void validateItemConstraints(MobiquityPackageItem mobiquityPackageItem)
 			throws ItemMaxWeightExceededException, ItemMaxCostExceededException {

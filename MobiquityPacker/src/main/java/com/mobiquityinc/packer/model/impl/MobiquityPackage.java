@@ -1,15 +1,15 @@
-package com.mobiquityinc.packer.model;
+package com.mobiquityinc.packer.model.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * Model to store a single package that could be packed with items.
- */
-public class MobiquityPackage {
+import com.mobiquityinc.packer.model.APackage;
+import com.mobiquityinc.packer.model.APackageItem;
+
+public class MobiquityPackage implements APackage {
 
 	private Double maxWeight;
-	private List<MobiquityPackageItem> items = new ArrayList<MobiquityPackageItem>();
+	private List<APackageItem> items = new ArrayList<APackageItem>();
 
 	public Double getMaxWeight() {
 		return maxWeight;
@@ -19,11 +19,11 @@ public class MobiquityPackage {
 		this.maxWeight = maxWeight;
 	}
 
-	public List<MobiquityPackageItem> getItems() {
+	public List<APackageItem> getItems() {
 		return items;
 	}
 
-	public void addItem(MobiquityPackageItem item) {
+	public void addItem(APackageItem item) {
 		this.items.add(item);
 	}
 

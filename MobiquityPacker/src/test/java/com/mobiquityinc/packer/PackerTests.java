@@ -11,15 +11,18 @@ import java.nio.file.Paths;
 import org.junit.Test;
 
 import com.mobiquityinc.exceptions.APIException;
-import com.mobiquityinc.packer.model.MobiquityPackage;
-import com.mobiquityinc.packer.model.MobiquityPackageItem;
+import com.mobiquityinc.packer.model.APackage;
+import com.mobiquityinc.packer.model.APackageItem;
+import com.mobiquityinc.packer.model.impl.MobiquityPackage;
+import com.mobiquityinc.packer.model.impl.MobiquityPackageItem;
 
 public class PackerTests {
 
 	public static final String ONE_DATA_DATASET = "src/test/resources/testPackages1.txt";
 	public static final String TWO_DATA_DATASET = "src/test/resources/testPackages2.txt";
 	public static final String ALL_DATA_DATASET = "src/test/resources/testPackages3.txt";
-	public static final String WRONG_FILE_PATH = "e:/doesnotexist/packages.txt";
+	public static final String INVALID_DATA_DATASET = "src/test/resources/testPackages4.txt";
+	public static final String WRONG_FILE_PATH = "doesnotexist/packages.txt";
 
 	@Test
 	public void whenReadDataFileCount1() throws IOException {
@@ -70,12 +73,19 @@ public class PackerTests {
 		assertEquals(null, read);
 	}
 	
+	@Test(expected = APIException.class)
+	public void whenReadDataInvalid_thenException() throws APIException {
+		String read = Packer.pack(INVALID_DATA_DATASET);
+
+		assertEquals(null, read);
+	}
+	
 	@Test
 	public void whenNewPackageMaxWeightSet() {
 		
 		Double randomWeight = Math.random() * 100;
 		
-		MobiquityPackage mobiquityPackage = new MobiquityPackage();
+		APackage mobiquityPackage = new MobiquityPackage();
 		mobiquityPackage.setMaxWeight(randomWeight);
 		
 		assertEquals(randomWeight, mobiquityPackage.getMaxWeight());
@@ -84,7 +94,7 @@ public class PackerTests {
 	@Test
 	public void whenNewPackageItemSet() {
 
-		MobiquityPackageItem mobiquityPackageItem = new MobiquityPackageItem();
+		APackageItem mobiquityPackageItem = new MobiquityPackageItem();
 		mobiquityPackageItem.setIndexNumber((int)Math.random()*10);
 		mobiquityPackageItem.setCost(new BigDecimal(Math.random()*100));
 		mobiquityPackageItem.setWeight(new Double(Math.random()*100));
