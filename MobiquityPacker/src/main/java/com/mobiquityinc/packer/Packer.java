@@ -16,6 +16,7 @@ import com.mobiquityinc.exceptions.ItemMaxWeightExceededException;
 import com.mobiquityinc.exceptions.PackageMaxWeightExceededException;
 import com.mobiquityinc.packer.impl.MobiquityPackOptimizer;
 import com.mobiquityinc.packer.model.APackage;
+import com.mobiquityinc.packer.model.APackageItem;
 import com.mobiquityinc.packer.model.MobiquityPackages;
 import com.mobiquityinc.packer.model.impl.MobiquityPackage;
 import com.mobiquityinc.packer.model.impl.MobiquityPackageItem;
@@ -103,7 +104,7 @@ public class Packer {
 					String temp = line.substring(idx + 1, end);
 					String[] arr = temp.split(",");
 
-					MobiquityPackageItem item = new MobiquityPackageItem();
+					APackageItem item = new MobiquityPackageItem();
 					item.setIndexNumber(new Integer(arr[0]));
 					item.setWeight(new Double(arr[1]));
 					item.setCost(new BigDecimal(arr[2].replaceAll(EURO_SYMBOL, "")));
@@ -136,12 +137,11 @@ public class Packer {
 	 * Validate constraints from the input file data relating the the package
 	 * maximum weight.
 	 */
-	private static void validatePackageConstraints(MobiquityPackage mobiquityPackage)
-			throws PackageMaxWeightExceededException {
+	private static void validatePackageConstraints(APackage aPackage) throws PackageMaxWeightExceededException {
 
 		logger.debug("Validating package constraints");
 
-		if (mobiquityPackage.getMaxWeight().doubleValue() > PACKAGE_MAX_WEIGHT) {
+		if (aPackage.getMaxWeight().doubleValue() > PACKAGE_MAX_WEIGHT) {
 			throw new PackageMaxWeightExceededException("Maximum weight exceeded for package");
 		}
 	}
@@ -150,16 +150,16 @@ public class Packer {
 	 * Validate constraints from the input file data relating the the items' maximum
 	 * weight and maximum item cost.
 	 */
-	private static void validateItemConstraints(MobiquityPackageItem mobiquityPackageItem)
+	private static void validateItemConstraints(APackageItem aPackageItem)
 			throws ItemMaxWeightExceededException, ItemMaxCostExceededException {
 
 		logger.debug("Validating item constraints");
 
-		if (mobiquityPackageItem.getWeight().doubleValue() > ITEM_MAX_WEIGHT) {
+		if (aPackageItem.getWeight().doubleValue() > ITEM_MAX_WEIGHT) {
 			throw new ItemMaxWeightExceededException("Maximum weight exceeded for item");
 		}
 
-		if (mobiquityPackageItem.getCost().doubleValue() > ITEM_MAX_COST) {
+		if (aPackageItem.getCost().doubleValue() > ITEM_MAX_COST) {
 			throw new ItemMaxWeightExceededException("Maximum cost exceeded for item");
 		}
 	}

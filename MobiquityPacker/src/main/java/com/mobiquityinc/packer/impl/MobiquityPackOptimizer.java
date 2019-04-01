@@ -14,12 +14,11 @@ import org.slf4j.LoggerFactory;
 import com.mobiquityinc.packer.PackOptimizer;
 import com.mobiquityinc.packer.model.APackage;
 import com.mobiquityinc.packer.model.APackageItem;
-import com.mobiquityinc.packer.model.impl.MobiquityPackageItem;
 
 public class MobiquityPackOptimizer implements PackOptimizer {
 
 	private static final Logger logger = LoggerFactory.getLogger(MobiquityPackOptimizer.class);
-	
+
 	/*
 	 * optimize a single package
 	 */
@@ -29,7 +28,7 @@ public class MobiquityPackOptimizer implements PackOptimizer {
 
 		// use to store different item packing scenarios
 		Map<Integer, Set<Integer>> scenarios = new HashMap<Integer, Set<Integer>>();
-		
+
 		BigDecimal maxPackedCost = new BigDecimal(0.0);
 		Double maxPackedWeight = new Double(0.0);
 		Integer maxPackedCostIndex = 0;
@@ -44,7 +43,8 @@ public class MobiquityPackOptimizer implements PackOptimizer {
 
 		// queue will be used to start packing from different item start positions
 		while (!queue.isEmpty()) {
-			// HashSet (faster than TreeSet), used to store items that exceeds package weight
+			// HashSet (faster than TreeSet), used to store items that exceeds package
+			// weight
 			Set<Integer> notPickedItems = new HashSet<Integer>();
 
 			int currentIndexNumber = queue.remove();
@@ -54,7 +54,7 @@ public class MobiquityPackOptimizer implements PackOptimizer {
 
 			// start from current position to end
 			for (int i = currentIndexNumber; i < mobiquityPackage.getItems().size(); i++) {
-				MobiquityPackageItem item = (MobiquityPackageItem) mobiquityPackage.getItems().get(i);
+				APackageItem item = mobiquityPackage.getItems().get(i);
 				if ((packedWeight + item.getWeight()) < mobiquityPackage.getMaxWeight()) {
 					packedWeight += item.getWeight();
 					packedCost = packedCost.add(item.getCost());
@@ -65,7 +65,7 @@ public class MobiquityPackOptimizer implements PackOptimizer {
 
 			// start from beginning to before current position
 			for (int i = 0; i < currentIndexNumber; i++) {
-				MobiquityPackageItem item = (MobiquityPackageItem) mobiquityPackage.getItems().get(i);
+				APackageItem item = mobiquityPackage.getItems().get(i);
 				if ((packedWeight + item.getWeight()) < mobiquityPackage.getMaxWeight()) {
 					packedWeight += item.getWeight();
 					packedCost = packedCost.add(item.getCost());
