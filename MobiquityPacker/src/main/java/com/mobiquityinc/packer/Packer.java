@@ -26,7 +26,7 @@ public class Packer {
 	private static final double ITEM_MAX_COST = 100;
 
 	public static void main(String[] args) throws APIException {
-		System.out.println(pack("e:/downloads/packages.txt"));
+		System.out.println(pack("src/main/resources/packages.txt"));
 	}
 
 	private static Logger logger = LoggerFactory.getLogger(Packer.class);
